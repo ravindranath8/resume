@@ -1,0 +1,5 @@
+streamlit
+requests
+chardet
+pdfminer.six
+python-docx
