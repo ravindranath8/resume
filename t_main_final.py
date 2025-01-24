@@ -68,8 +68,8 @@ def main():
     set_background(online_image_url)
 
     # Streamlit app content
-    st.title("My Streamlit App with Custom Background")
-    st.write("This is a sample Streamlit app with a custom background image!")
+    #st.title("My Streamlit App ")
+    st.write("share it with friends ")
 
 if __name__ == "__main__":
     main()
