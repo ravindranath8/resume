@@ -11,23 +11,40 @@ import streamlit as st
 from pathlib import Path
 import base64
 
+import streamlit as st
+import base64
+from pathlib import Path
+import requests
+from io import BytesIO
+
 def set_background(image_path):
     """
     This function sets the background of a Streamlit app to a specified image.
     
     Parameters:
-    image_path (str): The path to the image file.
+    image_path (str or Path): The path to the image file (local or online).
     """
-    # Read image file and encode it as base64
-    with open(image_path, "rb") as f:
-        img_data = f.read()
+    if str(image_path).startswith("http"):
+        # Fetch the image from a URL
+        response = requests.get(image_path)
+        if response.status_code == 200:
+            img_data = response.content
+        else:
+            st.error("Error: Unable to load the background image from the URL.")
+            return
+    else:
+        # Read local image file
+        with open(image_path, "rb") as f:
+            img_data = f.read()
+    
+    # Encode the image to base64
     b64_encoded = base64.b64encode(img_data).decode()
     
-    # Create CSS style with background image
+    # Generate CSS to set background
     css = f"""
     <style>
     .stApp {{
-        background-image: url(data:image/png;base64,{b64_encoded});
+        background-image: url("data:image/png;base64,{b64_encoded}");
         background-size: cover;
         background-repeat: no-repeat;
         background-attachment: fixed;
@@ -35,20 +52,28 @@ def set_background(image_path):
     </style>
     """
     
-    # Apply the CSS style
+    # Inject the CSS
     st.markdown(css, unsafe_allow_html=True)
 
 def main():
-    # Set background (replace with your image path)
-    img_path = Path(__file__).parent / r"https://github.com/ravindranath8/resume/blob/main/yellow_image.png"
-    set_background(img_path)
+    # Use a local image or an online image
+    # For local image: provide a valid relative or absolute path
+    local_image_path = Path(__file__).parent / "yellow_image.png"
     
-    # Add your Streamlit app content here
-    #st.title("My Streamlit App with Custom Background")
-    #st.write("This is a sample Streamlit app with a custom background image!")
+    # For online image, provide a valid URL
+    online_image_url = "https://raw.githubusercontent.com/ravindranath8/resume/main/yellow_image.png"
+    
+    # Uncomment the preferred option
+    # set_background(local_image_path)
+    set_background(online_image_url)
+
+    # Streamlit app content
+    st.title("My Streamlit App with Custom Background")
+    st.write("This is a sample Streamlit app with a custom background image!")
 
 if __name__ == "__main__":
     main()
+
 # Custom CSS for styling
 st.markdown("""
     <style>
