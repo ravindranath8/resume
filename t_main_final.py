@@ -40,7 +40,7 @@ def set_background(image_path):
 
 def main():
     # Set background (replace with your image path)
-    img_path = Path(__file__).parent / r"C:\vscode\ATS_Resume_Analyzer\light_image.png"
+    img_path = Path(__file__).parent / r"https://github.com/ravindranath8/resume/blob/main/yellow_image.png"
     set_background(img_path)
     
     # Add your Streamlit app content here
